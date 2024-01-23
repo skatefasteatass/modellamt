@@ -1,25 +1,27 @@
 <script setup>
   import IconStar from "./icons/IconStar.vue";
+  const props = defineProps(['data']);
+  console.log(props.data);
 </script>
 
 <template>
-  <div class="container">
-    <h3> Szenario Großstadt </h3>
+  <div class="card-container">
+    <h3> {{ data.title }} </h3>
     <div class="star-container">
-      <IconStar/>
-      <IconStar/>
-      <IconStar/>
+      <IconStar filled/>
+      <IconStar :filled="data.name != 'easy'"/>
+      <IconStar :filled="data.name == 'hard'"/>
     </div>
-    <p style="margin-top: 10px">Sie spielen eine Wohngeldbhörde in einer Großstadt, die Antragszahl ist hoch und die finanziellen Mittel im Verhältnis gering</p>
+    <p style="margin-top: 10px">{{ data.description }}</p>
     <p style="margin-top: 20px">Anzahl der Anträge</p>
-    <p class="number">20.000</p>
+    <p class="number">{{ data.count }}</p>
     <p style="margin-top: 20px">Budget</p>
-    <p class="number">200.000€</p>
+    <p class="number">{{ data.budget }}€</p>
   </div>
 </template>
 
 <style>
-.container {
+.card-container {
   padding: 10px 20px;
   display: flex;
   align-items: center;
@@ -30,6 +32,7 @@
   border-radius: 20px;
   background: linear-gradient(202deg, #8989AE 4.81%, #D1CAB5 52.49%, #CDB64E 110.24%);
   box-shadow: 2px 2px 5.1px 1px rgba(229, 229, 229, 0.26);
+  flex-shrink: 0;
 }
 .star-container {
   width: 75%;

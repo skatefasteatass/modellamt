@@ -77,6 +77,9 @@ class ApiService {
         });
     });
   }
+  static getAllScenarios() {
+    return getInfo(`${this.url}/scenarios`, null);
+  }
   static getRessource(ressourceId) {
     return getInfo(`${this.url}/ressource`, { resId: ressourceId });
   }
