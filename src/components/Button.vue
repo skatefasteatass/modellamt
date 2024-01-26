@@ -34,5 +34,12 @@ p {
   background-color: var(--primary-light);
   color: var(--neutral);
 }
+a {
+  color: var(--neutral-light);
+  text-decoration: none;
+}
+.light a{
+  color: var(--neutral);
+}
 </style>
 

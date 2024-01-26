@@ -1,5 +1,6 @@
 <script setup>
   import { computed, onMounted, ref } from 'vue';
+  import { RouterLink } from 'vue-router';
   import ScenarioCard from '../components/ScenarioCard.vue';
   import { useScenariosStore } from '../stores/scenarions.js';
   import Button from '../components/Button.vue';
@@ -15,26 +16,16 @@
     for (var i = 0; i < 3; i++) {
       var offset = containerElement.value.children[0].offsetLeft; 
       var x = containerElement.value.children[i].getBoundingClientRect().x;
-      if (Math.abs(offset-x) < 20) {
+      if (Math.abs(offset-x) < 50) {
         selected.value = [false, false, false];
         selected.value[i] = true;
       }
-      //var scale = null;
-      //// scale > 0.8
-      //if (x > 184 || x < -80) {
-      //  scale = 0.6;
-      //} else {
-      //  scale = Math.abs((Math.abs(x-52)-330)/330)
-      //}
-      //// scale = Math.round(scale * 100) / 100;
-      // scales.value[i] = scale;
-      //console.log(i + ": " + scale);
     }
   }
 </script>
 
 <template>
-  <Button is-light>Info & Anleitung</Button>
+  <Button is-light><RouterLink to="/info">Info & Anleitung</RouterLink></Button>
   <p>Wählen Sie ein Szenario:</p>
   <div class="v-scroll" dir="ltr" ref="containerElement" v-on:scroll="updateSelected">
     <ScenarioCard class="card" v-for="(item, index) in scenData" :class="{ selected: selected[index] }" :data="item"/>
@@ -68,6 +59,10 @@
   }
   .selected{
     border: 4px solid var(--primary-light);
+  }
+  p {
+    font-style: italic;
+    font-size: var(--font-size-large);
   }
 </style>
 
