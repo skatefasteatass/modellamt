@@ -1,10 +1,11 @@
 <script setup>
   import { computed, onMounted, ref } from 'vue';
-  import { RouterLink } from 'vue-router';
+  import { useRouter } from 'vue-router';
   import ScenarioCard from '../components/ScenarioCard.vue';
   import { useScenariosStore } from '../stores/scenarions.js';
   import Button from '../components/Button.vue';
   
+  const router = useRouter();
   const scenarioStore = useScenariosStore();
   await scenarioStore.fetchScenarios();
   var scenData = computed(() => scenarioStore.scenarios);
@@ -25,7 +26,7 @@
 </script>
 
 <template>
-  <Button is-light><RouterLink to="/info">Info & Anleitung</RouterLink></Button>
+  <Button is-light @click="router.push('/info')">Info & Anleitung</Button>
   <p>Wählen Sie ein Szenario:</p>
   <div class="v-scroll" dir="ltr" ref="containerElement" v-on:scroll="updateSelected">
     <ScenarioCard class="card" v-for="(item, index) in scenData" :class="{ selected: selected[index] }" :data="item"/>

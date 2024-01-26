@@ -1,26 +1,37 @@
 <script setup>
 import { ref, computed, onMounted, onUpdated } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useFullscreen } from "@vueuse/core";
 import IconFullscreen from "./components/icons/IconFullscreen.vue";
+import IconBack from "./components/icons/IconBack.vue";
+
+const route = useRoute();
+const router = useRouter();
 
 const el = ref(null);
 const { isFullscreen, enter, exit, toggle } = useFullscreen(el);
 
-const route = useRoute();
 const headerText = computed(() => {
   switch (route.name) {
     case "start":
       return "Wohngeldbehörde";
+    case "info":
+      return "Wohngeldbehörde";
   }
 });
-var isReturn = false;
+const isReturn = computed(() => {
+  if (route.name === "info") {
+    return true;
+  } else {
+    return false;
+    }
+});
 </script>
 
 <template ref="el">
   <header>
-    <button :class="{ hidden: !isReturn }" @click="enter">
-      <IconFullscreen />
+    <button :class="{ hidden: !isReturn }" @click="router.back()">
+      <IconBack fillColor="#F0ECFF"/>
     </button>
     <p>{{ headerText }}</p>
     <button @click="toggle">
@@ -53,10 +64,12 @@ header p {
   font-weight: 400;
 }
 .container {
+  min-height: calc(100% - 60px - 40px);
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   margin: 20px 0;
 }
 .hidden {
