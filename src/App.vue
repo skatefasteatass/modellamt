@@ -17,6 +17,8 @@ const headerText = computed(() => {
       return "Wohngeldbehörde";
     case "info":
       return "Wohngeldbehörde";
+    case "scan":
+      return "Ressource hinzufügen";
   }
 });
 const isReturn = computed(() => {

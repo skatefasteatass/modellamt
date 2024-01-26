@@ -1,17 +1,26 @@
 <script setup>
-  import { computed, onMounted, ref } from 'vue';
+  import { computed, ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import ScenarioCard from '../components/ScenarioCard.vue';
   import { useScenariosStore } from '../stores/scenarions.js';
+  import ApiService from '../apiService';
+  import ScenarioCard from '../components/ScenarioCard.vue';
   import Button from '../components/Button.vue';
+  import LoadingAnimation from '../components/LoadingAnimation.vue';
   
   const router = useRouter();
   const scenarioStore = useScenariosStore();
-  await scenarioStore.fetchScenarios();
-  var scenData = computed(() => scenarioStore.scenarios);
 
+  const isLoading = ref(true);
   var containerElement=ref(null);
+
+  scenarioStore.fetchScenarios()
+  .then(() => {
+    isLoading.value=false;
+  });
+
+  var scenData = computed(() => scenarioStore.scenarios);
   const selected = ref([true, false, false]);
+  //var scenario = scenarioStore.scenarios[0].name;
 
   function updateSelected() {
     for (var i = 0; i < 3; i++) {
@@ -20,19 +29,25 @@
       if (Math.abs(offset-x) < 50) {
         selected.value = [false, false, false];
         selected.value[i] = true;
+        //scenario = scenarioStore.scenarios[i].name;
+        //console.log(scenario);
       }
     }
+  }
+  
+  function startGame() {
   }
 </script>
 
 <template>
+  <LoadingAnimation v-if="isLoading"/>
   <Button is-light @click="router.push('/info')">Info & Anleitung</Button>
   <p>Wählen Sie ein Szenario:</p>
   <div class="v-scroll" dir="ltr" ref="containerElement" v-on:scroll="updateSelected">
     <ScenarioCard class="card" v-for="(item, index) in scenData" :class="{ selected: selected[index] }" :data="item"/>
     <!-- <ScenarioCard  :style="{ 'transform': `scale(${scales[key]})`}" class="card" :data="scen"/> -->
   </div>
-  <Button>Spiel Starten</Button>
+  <Button @click="router.push('/scan')">Spiel Starten</Button>
 </template>
 
 <style scoped>

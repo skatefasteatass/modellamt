@@ -1,7 +1,6 @@
 <script setup>
   import IconStar from "./icons/IconStar.vue";
   const props = defineProps(['data']);
-  console.log(props.data);
 </script>
 
 <template>
