@@ -12,28 +12,27 @@ const el = ref(null);
 const { isFullscreen, enter, exit, toggle } = useFullscreen(el);
 
 const headerText = computed(() => {
-  switch (route.name) {
-    case "start":
-      return "Wohngeldbehörde";
-    case "info":
-      return "Wohngeldbehörde";
-    case "scan":
-      return "Ressource hinzufügen";
+  if (route.params.mode === "remove") {
+    return "Ressource entfernen";
   }
+  if (route.params.mode === "add") {
+    return "Ressource hinzufügen";
+  }
+  return "Wohngeldbehörde";
 });
 const isReturn = computed(() => {
-  if (route.name === "info") {
+  if (route.name === "info" || route.params.mode === "remove") {
     return true;
   } else {
     return false;
-    }
+  }
 });
 </script>
 
 <template ref="el">
   <header>
     <button :class="{ hidden: !isReturn }" @click="router.back()">
-      <IconBack fillColor="#F0ECFF"/>
+      <IconBack fillColor="#F0ECFF" />
     </button>
     <p>{{ headerText }}</p>
     <button @click="toggle">
@@ -52,7 +51,7 @@ header {
   height: 60px;
   position: sticky;
   top: 0;
-  width: calc(100% - 30px); 
+  width: calc(100% - 30px);
   padding: 0 15px;
   display: flex;
   justify-content: space-between;

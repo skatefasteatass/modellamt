@@ -2,17 +2,22 @@
 import { ref, defineEmits } from "vue";
 import { QrcodeStream } from "vue-qrcode-reader";
 
-const emit = defineEmits(['onError', 'onDetect']);
+const emit = defineEmits(["onError", "onDetect"]);
 
 // data
 const result = ref("");
 const error = ref("");
+const paused = ref(false);
 
 // methods
-const onDetect = (detectedCodes) => {
+const onDetect = async (detectedCodes) => {
   const [firstCode] = detectedCodes;
-  emit('onDetect', firstCode.rawValue);
+  emit("onDetect", firstCode.rawValue);
   result.value = firstCode.rawValue;
+
+  paused.value = true;
+  await timeout(500);
+  paused.value = false;
 };
 
 const onError = (err) => {
@@ -36,8 +41,9 @@ const onError = (err) => {
   } else {
     error.value += err.message;
   }
-  emit('onError', error.value);
+  emit("onError", error.value);
 };
+
 const drawOutline = (detectedCodes, ctx) => {
   for (const detectedCode of detectedCodes) {
     const [firstPoint, ...otherPoints] = detectedCode.cornerPoints;
@@ -54,6 +60,12 @@ const drawOutline = (detectedCodes, ctx) => {
     ctx.stroke();
   }
 };
+
+function timeout(ms) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
 </script>
 
 <template>
@@ -66,6 +78,7 @@ const drawOutline = (detectedCodes, ctx) => {
     </p>
     -->
     <qrcode-stream
+      :paused="paused"
       :constraints="'user'"
       :track="drawOutline"
       @detect="onDetect"

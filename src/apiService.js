@@ -7,7 +7,7 @@ class ApiService {
    *
    * @Param {string} scenarioName The name of the chosen scenarion ("easy", "medium" or "hard")
    */
-  static startGame(scenarioName) {
+  static initGame(scenarioName) {
     return new Promise((resolve, reject) => {
       axios
         .post(`${this.url}/init`, null, {
@@ -56,7 +56,7 @@ class ApiService {
   static deleteRessource(ressourceId) {
     return new Promise((resolve, reject) => {
       axios
-        .delete(`${this.url}/ressource`, null, {
+        .delete(`${this.url}/ressource`, {
           params: {
             resId: ressourceId,
           },

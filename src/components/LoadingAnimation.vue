@@ -1,14 +1,14 @@
 <script setup>
-  import {defineProps} from "vue";
+import { defineProps } from "vue";
 
-  const props = defineProps({
-    'isRef': Boolean
-  })
+const props = defineProps({
+  isRef: Boolean,
+});
 </script>
 
 <template>
-  <div class="message animation-container" :class="{'ref': props.isRef}">
-    <div class="animation" >
+  <div class="message animation-container" :class="{ ref: props.isRef }">
+    <div class="animation">
       <div class="dot left"></div>
       <div class="dot middle"></div>
       <div class="dot right"></div>
@@ -17,7 +17,7 @@
 </template>
 
 <style scoped>
-.animation-container{
+.animation-container {
   height: 30px;
   width: 50px;
   display: flex;
@@ -36,11 +36,11 @@
   width: 8px;
   border-radius: 50%;
 }
-.ref{
+.ref {
   background-color: var(--color-bg-lmode-blueish);
 }
 @media (prefers-color-scheme: dark) {
-  .dot{
+  .dot {
     background-color: white;
   }
 }

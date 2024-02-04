@@ -6,38 +6,38 @@ import QrScanner from "./components/QrScanner.vue";
 
 function startGame() {
   ApiService.startGame("hard")
-  .then(data => console.log(data))
-  .catch(e => {
-    console.log(e);
-  });
+    .then((data) => console.log(data))
+    .catch((e) => {
+      console.log(e);
+    });
 }
 function addRessource() {
   ApiService.postRessource("65a25406c6d43920386c2256")
-  .then(data => console.log(data))
-  .catch(e => {
-    console.log(e);
-  });
+    .then((data) => console.log(data))
+    .catch((e) => {
+      console.log(e);
+    });
 }
 function getScenario() {
   ApiService.getScenario("hard")
-  .then(data => console.log(data))
-  .catch(e => {
-    console.log(e);
-  });
+    .then((data) => console.log(data))
+    .catch((e) => {
+      console.log(e);
+    });
 }
 function getRessource() {
   ApiService.getRessource("65a25406c6d43920386c2256")
-  .then(data => console.log(data))
-  .catch(e => {
-    console.log(e);
-  });
+    .then((data) => console.log(data))
+    .catch((e) => {
+      console.log(e);
+    });
 }
 function getGameState() {
   ApiService.getGameState()
-  .then(data => console.log(data))
-  .catch(e => {
-    console.log(e);
-  });
+    .then((data) => console.log(data))
+    .catch((e) => {
+      console.log(e);
+    });
 }
 </script>
 
@@ -66,7 +66,7 @@ function getGameState() {
     </div>
   </header>
   <RouterView />
-  <QrScanner/>
+  <QrScanner />
 </template>
 
 <style scoped>

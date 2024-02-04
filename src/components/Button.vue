@@ -1,15 +1,15 @@
 <script setup>
-  const props = defineProps({
-    isLight: Boolean
-  });
+const props = defineProps({
+  isLight: Boolean,
+});
 </script>
 
 <template>
   <button :class="{ light: isLight }">
-  <p>
-    <slot/>
-  </p>
-</button>
+    <p>
+      <slot />
+    </p>
+  </button>
 </template>
 
 <style scoped>
@@ -30,7 +30,7 @@ p {
 .light {
   background-color: var(--primary-light);
 }
-.light p{
+.light p {
   background-color: var(--primary-light);
   color: var(--neutral);
 }
@@ -38,8 +38,7 @@ a {
   color: var(--neutral-light);
   text-decoration: none;
 }
-.light a{
+.light a {
   color: var(--neutral);
 }
 </style>
-
