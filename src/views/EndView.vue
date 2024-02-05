@@ -3,10 +3,13 @@ import { computed, ref, toRaw } from "vue";
 import RessourceCard from "../components/RessourceCard.vue";
 import { useGamestateStore } from "../stores/gamestate.js";
 import { useScenariosStore } from "../stores/scenarions.js";
+import { useRouter } from "vue-router";
 import ApiService from "../apiService";
+import Button from "../components/Button.vue";
 
 const gameStateStore = useGamestateStore();
 const scenarioStore = useScenariosStore();
+const router = useRouter();
 
 const isLoading = ref(true);
 const usedRessources = ref({});
@@ -25,6 +28,12 @@ const time = computed(() => {
   return timePerApplication.value * count.value;
 });
 
+function endGame(){
+  ApiService.deleteGameState() 
+  .then(() => router.push("/"))
+  .catch((e) => console.log(e))
+}
+
 ApiService.getGameState() 
 .then((res) => {
   for(var key in res.ressources) {
@@ -42,7 +51,7 @@ ApiService.getGameState()
   <div style=" display: flex; align-items: center; justify-content: space-around" v-if="isLoading">
     <LoadingAnimation />
   </div>
-  <div v-else class="container">
+  <div v-else class="end-container">
     <div class="time-container">
       <p>
         Mit den gewählten Ressourcen dauert die Bearbeitung von
@@ -52,22 +61,31 @@ ApiService.getGameState()
         <p>{{ time }} Minuten</p>
         <p>{{ timePerApplication }} Minuten per Antrag</p>
       </div>
-      <RessourceCard v-for="(value, key) in usedRessources" :res-id="key" :res-count="value"/>
     </div>
+    <RessourceCard style="margin-bottom: 20px;" v-for="(value, key) in usedRessources" :res-id="key" :res-count="value"/>
+    <Button @click="endGame()">Neues Spiel</Button>
   </div>
 </template>
 
 <style scoped>
+.end-container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
 .time-container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 20px;
+  margin-bottom: 30px;
 }
 .time-container > p {
   padding: 10px 20px;
 }
 .time {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

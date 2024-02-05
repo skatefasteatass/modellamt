@@ -89,7 +89,11 @@ class ApiService {
   static getGameState() {
     return getInfo(`${this.url}/gamestate`, null);
   }
+  static deleteGameState() {
+    return getInfo(`${this.url}/gamestate`, null);
+  }
 }
+
 
 function getInfo(url, param) {
   return new Promise((resolve, reject) => {
