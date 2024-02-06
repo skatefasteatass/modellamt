@@ -7,6 +7,7 @@ export const useGamestateStore = defineStore("gamestate", () => {
   const budget = ref(null);
   const time = ref(null);
   const chosenScenario = ref(null);
+
   async function startGame(scenName) {
     return new Promise((resolve, reject) => {
       ApiService.initGame(scenName)
@@ -24,5 +25,24 @@ export const useGamestateStore = defineStore("gamestate", () => {
     });
   }
 
-  return { startBudget, budget, time, startGame, chosenScenario };
+  async function reload() {
+    return new Promise(async (resolve, reject) => {
+      try{
+        const gameData = await ApiService.getGameState();
+        budget.value = gameData.budget;
+        time.value = gameData.time;
+        chosenScenario.value = gameData.scenario;
+        const scenData = await ApiService.getScenario(gameData.scenario);
+        startBudget.value = scenData.budget;
+        resolve()
+      }
+      catch(e) {
+        console.log("Failed to initalize gamestate in store" + e);
+        reject();
+      }
+    });
+  }
+
+
+  return { startBudget, budget, time, startGame, chosenScenario, reload };
 });

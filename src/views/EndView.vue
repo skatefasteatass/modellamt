@@ -13,12 +13,13 @@ const router = useRouter();
 
 const isLoading = ref(true);
 const usedRessources = ref({});
+const count = ref(null);
 
-const count = computed(() => {
-  return scenarioStore.scenarios.find(
-    (scen) => scen.name === gameStateStore.chosenScenario,
-  ).count;
-});
+if(scenarioStore.scenarios === null){
+  await gameStateStore.reload();
+  await scenarioStore.fetchScenarios();
+} 
+count.value = scenarioStore.getCount(gameStateStore.chosenScenario);
 
 const timePerApplication = computed(() => {
   return gameStateStore.time;
@@ -29,12 +30,12 @@ const time = computed(() => {
 });
 
 function endGame(){
-  ApiService.deleteGameState() 
+  ApiService.deleteGameState()
   .then(() => router.push("/"))
   .catch((e) => console.log(e))
 }
 
-ApiService.getGameState() 
+ApiService.getGameState()
 .then((res) => {
   for(var key in res.ressources) {
     if (res.ressources[key] != 0){
@@ -44,11 +45,13 @@ ApiService.getGameState()
   isLoading.value = false;
 })
 .catch(e => console.log(e));
-
 </script>
 
 <template>
-  <div style=" display: flex; align-items: center; justify-content: space-around" v-if="isLoading">
+  <div
+    style="display: flex; align-items: center; justify-content: space-around"
+    v-if="isLoading"
+  >
     <LoadingAnimation />
   </div>
   <div v-else class="end-container">
@@ -62,7 +65,12 @@ ApiService.getGameState()
         <p>{{ timePerApplication }} Minuten per Antrag</p>
       </div>
     </div>
-    <RessourceCard style="margin-bottom: 20px;" v-for="(value, key) in usedRessources" :res-id="key" :res-count="value"/>
+    <RessourceCard
+      style="margin-bottom: 20px"
+      v-for="(value, key) in usedRessources"
+      :res-id="key"
+      :res-count="value"
+    />
     <Button @click="endGame()">Neues Spiel</Button>
   </div>
 </template>
@@ -72,7 +80,7 @@ ApiService.getGameState()
   width: 90%;
   display: flex;
   flex-direction: column;
-  align-items:center;
+  align-items: center;
 }
 .time-container {
   width: 100%;

@@ -4,6 +4,9 @@ import ApiService from "../apiService.js";
 
 export const useScenariosStore = defineStore("scenarios", () => {
   const scenarios = ref(null);
+  function getCount(scenName){
+    return scenarios.value.find((scen) => scen.name === scenName).count
+  }
   async function fetchScenarios() {
     return new Promise((resolve, reject) => {
       ApiService.getAllScenarios()
@@ -18,5 +21,5 @@ export const useScenariosStore = defineStore("scenarios", () => {
     });
   }
 
-  return { scenarios, fetchScenarios };
+  return { scenarios, getCount, fetchScenarios };
 });

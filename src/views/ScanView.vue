@@ -58,6 +58,11 @@ function sendCodeToRemove(code) {
       text.value = e.msg;
     });
 }
+
+if (gamestateStore.budget === null){
+  gamestateStore.reload();
+}
+
 </script>
 <template>
   <div class="scan-container">
