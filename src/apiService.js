@@ -1,15 +1,8 @@
 import axios from "axios";
 
-const proxy = {
-  protocol: "http",
-  host: "localhost",
-  port: 5173,
-};
-
 class ApiService {
-  static url = import.meta.env.VITE_SERVER_URL;
+  static url = 'http://localhost:5173/api';
 
-  static proxy = proxy;
   /**
    * POST Request to start the game and initialize the gamestate
    *
@@ -18,8 +11,7 @@ class ApiService {
   static initGame(scenarioName) {
     return new Promise((resolve, reject) => {
       axios
-        .post(`${this.url}/init`, null, {
-          proxy: this.proxy,
+        .post(this.url + '/init', null, {
           params: {
             scenario: scenarioName,
           },
@@ -40,7 +32,6 @@ class ApiService {
     return new Promise((resolve, reject) => {
       axios
         .post(`${this.url}/ressource`, null, {
-          proxy: this.proxy,
           params: {
             resId: ressourceId,
           },
@@ -67,7 +58,6 @@ class ApiService {
     return new Promise((resolve, reject) => {
       axios
         .delete(`${this.url}/ressource`, {
-          proxy: this.proxy,
           params: {
             resId: ressourceId,
           },
@@ -109,7 +99,6 @@ function getInfo(url, param) {
   return new Promise((resolve, reject) => {
     axios
       .get(url, {
-        proxy: proxy,
         params: param,
         withCredentials: true,
       })
