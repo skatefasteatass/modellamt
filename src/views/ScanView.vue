@@ -15,6 +15,8 @@ var isError = ref(false);
 var text = ref(
   "Die QR Code der Ressource (Unterseite des Spielsteins) scannen",
 );
+var deg = ref(0);
+var cdBorderColor = ref('#D4DC62');
 
 var remainingWidth = computed(() => {
   const perc = gamestateStore.budget / gamestateStore.startBudget;
@@ -44,7 +46,8 @@ function sendCodeToAdd(code) {
     .catch((e) => {
       isError.value = true;
       text.value = e.msg;
-    });
+    })
+    .finally(() => countDownBorder())
 }
 
 function sendCodeToRemove(code) {
@@ -56,20 +59,47 @@ function sendCodeToRemove(code) {
     .catch((e) => {
       isError.value = true;
       text.value = e.msg;
-    });
+    })
+    .finally(() => countDownBorder())
 }
 
-if (gamestateStore.budget === null){
+if (gamestateStore.budget === null) {
   gamestateStore.reload();
+}
+
+function countDownBorder(){
+  if (isError.value){
+    cdBorderColor.value = '#c04231'
+  } else {
+    cdBorderColor.value = '#D4DC62'
+  }
+  deg.value = 359.9;
+  var interval = setInterval(function(){
+    if (deg.value <= 0){
+      clearInterval(interval);
+      deg.value = 0;
+      isError.value = false;
+      text.value = "Die QR Code der Ressource (Unterseite des Spielsteins) scannen";
+    } else {
+      deg.value--;
+    }
+
+  }, 1)
 }
 
 </script>
 <template>
-  <div class="scan-container">
+  <div
+    class="scan-container"
+  >
     <div :class="{ error: isError }" class="text-container">
       <p>{{ text }}</p>
     </div>
-    <div>
+    <div class="scanner-background" 
+    :style="{
+    background: `conic-gradient(from 0deg at 50% 50%, rgba(219, 226, 125, 0.00) 0.0deg, ${cdBorderColor} 0.0deg, ${cdBorderColor} ${deg}deg, rgba(255, 255, 255, 0.00) ${deg}deg)`,
+    }"
+    >
       <QrScanner
         class="scanner"
         @on-detect="sendCode"
@@ -98,6 +128,9 @@ if (gamestateStore.budget === null){
 .scan-container {
   width: 90%;
 }
+.scanner-background {
+  padding: 5px;
+}
 .text-container {
   margin-bottom: 20px;
   padding: 10px;
@@ -106,7 +139,6 @@ if (gamestateStore.budget === null){
   background-color: var(--error);
 }
 .scanner {
-  width: 100%;
   aspect-ratio: 1 / 1;
   background-color: var(--neutral-light);
 }
