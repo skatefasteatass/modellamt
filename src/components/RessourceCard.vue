@@ -71,7 +71,6 @@ ApiService.getRessource(props.resId)
   flex-shrink: 0;
 }
 .top .text-container {
-  font-size: 5vw;
   flex-grow: 1;
   text-align: center;
   white-space: nowrap;

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, defineEmits } from "vue";
 import { QrcodeStream } from "vue-qrcode-reader";
+import IconCameraSwitch from "./icons/IconCameraSwitch.vue";
 
 const emit = defineEmits(["onError", "onDetect"]);
 
@@ -8,6 +9,7 @@ const emit = defineEmits(["onError", "onDetect"]);
 const result = ref("");
 const error = ref("");
 const paused = ref(false);
+const facingMode = ref("user");
 
 // methods
 const onDetect = async (detectedCodes) => {
@@ -66,28 +68,47 @@ function timeout(ms) {
     window.setTimeout(resolve, ms);
   });
 }
+
+function switchCam() {
+  if (facingMode.value == "user") {
+    facingMode.value = "environment";
+  } else {
+    facingMode.value = "user";
+  }
+}
 </script>
 
 <template>
-  <div>
-    <!--
-    <p class="error">{{ error }}</p>
-
-    <p class="decode-result">
-      Last result: <b>{{ result }}</b>
-    </p>
-    -->
+  <div class="reader-container">
     <qrcode-stream
       :paused="paused"
-      :constraints="'user'"
+      :constraints="{facingMode}"
       :track="drawOutline"
       @detect="onDetect"
       @error="onError"
     />
+    <div class="switch" @click="switchCam()">
+      <IconCameraSwitch />
+    </div>
   </div>
 </template>
 
 <style scoped>
+.reader-container {
+  position: relative;
+}
+.switch {
+  height: 34px;
+  width: 34px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
 .error {
   font-weight: bold;
   color: red;

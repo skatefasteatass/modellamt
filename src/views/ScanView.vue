@@ -140,7 +140,6 @@ function countDownBorder(){
 }
 .scanner {
   aspect-ratio: 1 / 1;
-  background-color: var(--neutral-light);
 }
 .bar-container {
   display: flex;
